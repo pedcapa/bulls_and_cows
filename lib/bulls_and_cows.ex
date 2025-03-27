@@ -7,6 +7,25 @@ defmodule BullsAndCows do
       Enum.zip(secret_list, guess_list)
       |> Enum.count(fn {s, g} -> s == g end)
 
-    "#{bulls} Bulls, 0 Cows"
+    total_matches = total_matches(secret_list, guess_list)
+    cows = total_matches - bulls
+
+    "#{bulls} Bulls, #{cows} Cows"
+  end
+
+  defp frequencies(list) do
+    Enum.reduce(list, %{}, fn digit, acc ->
+      Map.update(acc, digit, 1, &(&1 + 1))
+    end)
+  end
+
+  defp total_matches(secret_list, guess_list) do
+    freq_secret = frequencies(secret_list)
+    freq_guess  = frequencies(guess_list)
+
+    Map.keys(freq_secret)
+    |> Enum.reduce(0, fn digit, acc ->
+      acc + min(Map.get(freq_secret, digit, 0), Map.get(freq_guess, digit, 0))
+    end)
   end
 end
