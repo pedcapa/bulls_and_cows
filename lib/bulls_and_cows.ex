@@ -10,7 +10,11 @@ defmodule BullsAndCows do
     total_matches = total_matches(secret_list, guess_list)
     cows = total_matches - bulls
 
-    "#{bulls} Bulls, #{cows} Cows"
+    if bulls == 4 do
+      "You win"
+    else
+      "#{bulls} Bulls, #{cows} Cows"
+    end
   end
 
   defp frequencies(list) do
